@@ -7,8 +7,7 @@ class Classifier():
         self.condition = []
         self.phenotype = None
 
-        self.fitness
-        tarp.init_fit
+        self.fitness = tarps.init_fit
         self.accuracy = 0.0
         self.aveMatchSetSize = None
         self.deletionVote = None

@@ -8,14 +8,14 @@ multiclass multiplexer (i.e. register bits are multiclass) whose attributes appe
 for spaces between instances
 '''
 
-class MissingMPInstanceGenerator():
+class MissingMPInstanceGenerator:
     def __init__(self,bits=6,classCount=4):
         #Check if bits is valid from 6 bit to 135 bit MP
         isValid = False
         addressBitCount = 0
         registerBitCount = 0
         for i in range(2,8):
-            if bits == i+pow(2,3):
+            if bits == i+pow(2,i):
                 isValid = True
                 addressBitCount = i
                 registerBitCount = bits - addressBitCount
@@ -117,5 +117,5 @@ class MissingMPInstanceGenerator():
                 writer.writerow([""]*(self.bits+1))
 
 
-m = MissingMPInstanceGenerator(bits=11,classCount=4)
+m = MissingMPInstanceGenerator(bits=6,classCount=4)
 m.exportInstances()

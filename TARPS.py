@@ -3,9 +3,11 @@ from sklearn.base import BaseEstimator, ClassifierMixin, RegressorMixin
 from sklearn.metrics import balanced_accuracy_score
 import numpy as np
 import random
+from OfflineEnvironment import *
+from Timer import *
 
 class TARPS(BaseEstimator):
-    def __init__(self,learningIterations = 1000, N=5000,p_spec=0.5,discreteAttributeLimit=10,specifiedAttributes = [],
+    def __init__(self,learningIterations = 1000, N=1000,p_spec=0.5,discreteAttributeLimit=10,specifiedAttributes = [],
                  discretePhenotypeLimit=10,nu=5,chi=0.8,upsilon=0.04,theta_GA=25,theta_del=20,beta=0.2,delta=0.1,
                  init_fit=0.01,fitnessReduction=0.1,theta_sel=0.5,randomSeed="none"):
         '''
@@ -74,7 +76,7 @@ class TARPS(BaseEstimator):
                 raise Exception("discreteAttributeLimit param must be nonnegative integer or 'c' or 'd'")
 
         # specifiedAttributes
-        if not (isinstance(specifiedAttributes, np.ndarray)):
+        if not (isinstance(specifiedAttributes, list)):
             raise Exception("specifiedAttributes param must be ndarray")
 
         for spAttr in specifiedAttributes:
@@ -229,4 +231,22 @@ class TARPS(BaseEstimator):
         except:
             raise Exception("X and y must be fully numeric")
 
-        
+        self.env = OfflineEnvironment(self,X,y)
+
+        if not self.env.formatData.discretePhenotype:
+            raise Exception("eLCS works best with classification problems. While we have the infrastructure to support continuous phenotypes, we have disabled it for this version.")
+
+        self.timer = Timer()
+        self.population = None #Initialize Population
+        self.explorIter = 0
+
+        while self.explorIter < self.learningIterations:
+            state_phenotype = self.env.getTrainInstance()
+            self.runIteration(state_phenotype, self.explorIter)
+            self.explorIter += 1
+            self.env.newInstance()
+
+        return self
+
+    def runIteration(self, state_phenotype, exploreIter):
+        print("iteration")

@@ -1,5 +1,5 @@
 import pandas as pd
-import TARPS
+from TARPS import *
 
 data = pd.read_csv("mp.csv",sep=",")
 dataFeatures = data.drop("class",axis=1).values

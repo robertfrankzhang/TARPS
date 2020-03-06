@@ -1,7 +1,7 @@
 
 import random
 
-class Classifier():
+class Classifier:
     def __init__(self,tarps):
         self.specifiedAttList = []
         self.condition = []

@@ -225,7 +225,7 @@ class TARPS(BaseEstimator):
                     if not (np.isnan(value)):
                         float(value)
             for value in y:
-                if not (np.isnan(value)):
+                if not (np.isnan(value)): #This doesn't check invalid phenotypes (i.e. phenotype is NaN but features exist) - Assumes is correct
                     float(value)
 
         except:
